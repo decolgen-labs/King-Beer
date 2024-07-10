@@ -10,6 +10,7 @@ namespace Game
     public class BeerServeManager : MonoBehaviorInstance<BeerServeManager>
     {
         public Action<Vector3> OnServerFail;
+        public Action<Customer> OnServeComplete;
 
         [SerializeField] private int _moneyLostOnFail = 20;
         [SerializeField] private Transform _beerCupPref;
@@ -20,6 +21,7 @@ namespace Game
         void OnEnable()
         {
             OnServerFail += OnServerFailHandler;
+            OnServeComplete += OnServeCompleteHandler;
         }
         void Start()
         {
@@ -28,17 +30,23 @@ namespace Game
         void OnDisable()
         {
             OnServerFail -= OnServerFailHandler;
+            OnServeComplete -= OnServeCompleteHandler;
         }
         #endregion
 
 
         private void OnServerFailHandler(Vector3 failPosition)
         {
+            Debug.Log("Remove money " + _moneyLostOnFail);
             MoneyManager.Instance.RemoveMoney(_moneyLostOnFail);
             TextPopup.Show("-" + _moneyLostOnFail, failPosition, Color.red);
             SoundManager.PlaySound(SoundEnum.ServeFail, failPosition);
             FlashingUI.Instance.Flash(Color.red);
             CustomCamera.Instance.Shake();
+        }
+        private void OnServeCompleteHandler(Customer completeCustomer)
+        {
+            SoundManager.PlaySound(SoundEnum.ServeComplete, completeCustomer.transform.position);
         }
 
         public void ServeBeer()

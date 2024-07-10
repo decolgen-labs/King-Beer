@@ -52,5 +52,7 @@
         "Temp/": true
     },
     "dotnet.defaultSolution": "UpDownBar.sln",
-    "window.autoDetectColorScheme": true
+    "cSpell.words": [
+        "braavos"
+    ]
 }

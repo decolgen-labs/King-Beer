@@ -20,7 +20,10 @@ namespace NOOD.Data
         {
             get
             {
-                TryLoad();
+                if (_data == null)
+                {
+                    QuickLoad();
+                }
                 return _data;
             }
         }
@@ -29,16 +32,17 @@ namespace NOOD.Data
         /// <summary>
         /// Use property Data to retreat data 
         /// </summary> 
-        private static void TryLoad()
+        private static void QuickLoad()
         {
+            Debug.Log("QuickLoad");
             if (PlayerPrefs.HasKey(typeof(T).Name))
             {
                 Debug.Log("QuickLoad Has Key");
                 _data = LoadDataFromPlayerPref(typeof(T).Name, default);
             }
-            else
+
+            if (_data == null)
             {
-                Debug.Log("QuickLoad don't have key of " + typeof(T).Name);
                 _data = new T();
                 QuickSave();
             }
@@ -81,7 +85,7 @@ namespace NOOD.Data
             if (PlayerPrefs.HasKey(keyName))
             {
                 jsonStr = PlayerPrefs.GetString(keyName);
-                Debug.Log("Load Data From Player Pref success: " + jsonStr);
+                Debug.Log("Load success: " + jsonStr);
                 return JsonConvert.DeserializeObject<T>(jsonStr);
             }
             else
@@ -153,7 +157,7 @@ namespace NOOD.Data
         public static void SaveToPlayerPrefWithGenId(T data, string Id)
         {
             string jsonStr = JsonConvert.SerializeObject(data, Formatting.Indented);
-            Debug.Log("Save To Player Pref With Gen Id: " + jsonStr);
+            Debug.Log(jsonStr);
             PlayerPrefs.SetString(typeof(T).Name + Id, jsonStr);
             PlayerPrefs.Save();
         }
@@ -164,7 +168,7 @@ namespace NOOD.Data
         /// </summary>
         public static void QuickClear()
         {
-            TryLoad();
+            QuickLoad();
             _data = default;
             QuickSave();
         }

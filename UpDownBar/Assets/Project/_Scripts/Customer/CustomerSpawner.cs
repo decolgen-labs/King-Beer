@@ -22,11 +22,16 @@ namespace Game
             {
                 yield return new WaitForSeconds(_spawnTime);
 
-                // Check if is any available seat
-                if (TableManager.Instance.IsAnyAvailableSeat() && GameplayManager.Instance.IsEndDay == false)
+                List<Table> availableTable = TableManager.Instance.GetTableList().Where(table => table.IsAvailable() == true).ToList();
+                if (availableTable != null && availableTable.Count > 0 && GameplayManager.Instance.IsEndDay == false)
                 {
-                    // Spawn customer
                     Customer customer = Instantiate(_customerPref, this.transform.position, Quaternion.identity).GetComponent<Customer>();
+
+                    // Get random seat
+                    int r = Random.Range(0, availableTable.Count - 1);
+                    Transform seat = availableTable[r].GetSeatForCustomer(customer);
+                    // Check if seat valid
+                    customer.SetTargetPosition(seat.position);
                 }
             }
         }

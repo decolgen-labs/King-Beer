@@ -16,6 +16,7 @@ namespace Game
         {
             if(other.gameObject.CompareTag(PUNISH_TAG))
             {
+                Debug.Log("Collider");
                 Destroy(this.gameObject);
                 BeerServeManager.Instance.OnServerFail?.Invoke(this.transform.position);            
             }

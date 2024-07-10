@@ -11,8 +11,8 @@ namespace Game
     public class MainMenu : MonoBehaviour
     {
         [Header("Main menu")]
+        [SerializeField] private CustomButton _playBtn, _howToPlay, _exit;
         [SerializeField] private Image _chooseImage;
-        [SerializeField] private CustomButton _newGame, _playBtn, _howToPlay, _exit;
         [SerializeField] private TransitionSettings _transitionSetting;
 
         [Header("How to play")]
@@ -21,10 +21,6 @@ namespace Game
 
         void Start()
         {
-            _newGame.OnHover += (() =>
-            {
-                _chooseImage.transform.position = _chooseImage.transform.position.ChangeY(_newGame.transform.position.y); 
-            });
             _playBtn.OnHover += (() =>
             {
                 _chooseImage.transform.position = _chooseImage.transform.position.ChangeY(_playBtn.transform.position.y); 
@@ -38,8 +34,7 @@ namespace Game
                 _chooseImage.transform.position =_chooseImage.transform.position.ChangeY(_exit.transform.position.y); 
             });
 
-            _newGame.OnClick += ResetSaveFile;
-            _playBtn.OnClick += LoadGameScene;
+            _playBtn.OnClick += OnPlayBtnClick;
             _howToPlay.OnClick += OpenHowToPlay;
             _closeBtn.OnClick += CloseHowToPlay;
             CloseHowToPlay();
@@ -49,15 +44,16 @@ namespace Game
             _howToPlayPanel.transform.DOKill();
         }
 
-        private void ResetSaveFile()
+        private void OnPlayBtnClick()
         {
-            PlayerPrefs.DeleteAll();
-            LoadGameScene();
-        }
-
-        private void LoadGameScene()
-        {
-            TransitionManager.Instance().Transition("GameScene", _transitionSetting, 0.3f);
+            if(JSInteropManager.IsConnected() == false)
+            {
+                ConnectWalletManager.Instance.StartConnectWallet(() => TransitionManager.Instance().Transition("GameScene", _transitionSetting, 0.3f));
+            }
+            else
+            {
+                TransitionManager.Instance().Transition("GameScene", _transitionSetting, 0.3f);
+            }
         }
 
         private void OpenHowToPlay()

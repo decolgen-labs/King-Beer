@@ -309,7 +309,6 @@ MonoBehaviour:
   - {fileID: 2457014162040920348}
   - {fileID: 6000171238255609342}
   - {fileID: 373057479262530211}
-  _unAvailableSeats: []
   AvailableSeatNumber: 1
 --- !u!114 &6895554189794984334
 MonoBehaviour:
@@ -396,8 +395,7 @@ MonoBehaviour:
   m_fontAsset: {fileID: 11400000, guid: 92e1b1b58b22e9e45b8f04ee0417818b, type: 2}
   m_sharedMaterial: {fileID: 1427219489298224990, guid: 92e1b1b58b22e9e45b8f04ee0417818b,
     type: 2}
-  m_fontSharedMaterials:
-  - {fileID: 1427219489298224990, guid: 92e1b1b58b22e9e45b8f04ee0417818b, type: 2}
+  m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -694,7 +692,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 4294967295
 --- !u!114 &7413195625126277633
 MonoBehaviour:
   m_ObjectHideFlags: 0

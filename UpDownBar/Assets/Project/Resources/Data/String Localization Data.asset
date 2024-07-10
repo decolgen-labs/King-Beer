@@ -51,7 +51,7 @@ MonoBehaviour:
       _value:
         Vietnamese: "Ti\u1EBFp t\u1EE5c"
         English: Resume
-    - _key: DontHaveEnoughMoney
+    - _key: Don'tHaveEnoughMoney
       _value:
         Vietnamese: "Kh\xF4ng c\xF3 \u0111\u1EE7 ti\u1EC1n r\u1ED3i"
         English: Don't Have Enough Money
@@ -78,7 +78,3 @@ MonoBehaviour:
       _value:
         Vietnamese: "Qua ng\xE0y"
         English: Next day
-    - _key: NewGame
-      _value:
-        Vietnamese: "Ch\u01A1i m\u1EDBi"
-        English: New Game

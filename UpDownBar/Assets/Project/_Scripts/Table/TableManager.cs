@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NOOD;
 using NOOD.Data;
 using UnityEngine;
@@ -16,15 +15,13 @@ namespace Game
 
     public class TableManager : MonoBehaviorInstance<TableManager>
     {
-        #region Variables
         public Action<Table> OnTableUpgrade;
         public Action<Customer> OnCustomComplete;
-        public Action<Transform> OnReturnSeat;
+        public Action<Customer> OnCustomerRequestBeer;
         [SerializeField] private List<Table> _tableList = new List<Table>();
         [SerializeField] private bool _unlockAllSeats;
         private int _currentTableIndex = 0;
         private TableData _tableData;
-        #endregion
 
         #region Unity Functions
         protected override void ChildAwake()
@@ -59,7 +56,6 @@ namespace Game
         }
         #endregion
 
-        #region Event functions
         private void OnTableUpgradeHandler(Table table)
         {
             int index = _tableList.IndexOf(table);
@@ -70,28 +66,7 @@ namespace Game
         {
             _currentTableIndex = index;
         }
-        public void CustomerComplete(Customer customer)
-        {
-            OnCustomComplete?.Invoke(customer);
-        }
-        #endregion
 
-        #region Get
-        public bool TryGetRandomSeat(out Transform resultSeat)
-        {
-            resultSeat = null;
-            List<Table> availableTable = _tableList.Where(table => table.IsAvailable() == true).ToList();
-            if (availableTable != null && availableTable.Count > 0)
-            {
-                // Get random seat
-                int r = UnityEngine.Random.Range(0, availableTable.Count - 1);
-                Transform seat = availableTable[r].GetRandomSeat();
-                // Check if seat valid
-                resultSeat = seat;
-                return true;
-            }
-            return false;
-        }
         public List<Table> GetTableList()
         {
             return _tableList;
@@ -115,35 +90,14 @@ namespace Game
         {
             return _tableList[_currentTableIndex];
         }
-        #endregion
-
-        #region Seat
-        public void ReturnSeat(Transform seat)
+        public void CustomerComplete(Customer customer)
         {
-            OnReturnSeat?.Invoke(seat);
+            OnCustomComplete?.Invoke(customer);
         }
-        #endregion
-
-        #region Support
-        public bool IsAnyAvailableSeat()
+        public void RequestBeer(Customer customer)
         {
-            List<Table> availableTable = _tableList.Where(table => table.IsAvailable() == true).ToList();
-            return availableTable != null && availableTable.Count > 0;
+            OnCustomerRequestBeer?.Invoke(customer);        
         }
-        #endregion
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

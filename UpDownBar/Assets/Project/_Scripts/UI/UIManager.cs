@@ -17,16 +17,13 @@ namespace Game
         public Action OnNextDayPressed;
         #endregion
 
-        #region Variables
         [Header("In game menu")]
         [SerializeField] private GameObject _ingameMenu;
         [SerializeField] private TextMeshProUGUI _moneyText;
-        [SerializeField] private TextMeshProUGUI _tipText;
         [SerializeField] private TextMeshProUGUI _timeText;
         [SerializeField] private Image _timeBG;
         [SerializeField] private TextMeshProUGUI _dayText;
         [SerializeField] private CustomButton _pauseGameBtn;
-        [SerializeField] private ReputationSlider _reputationSlider;
         private Color _timeOriginalColor;
 
         [Header("End day menu")]
@@ -45,7 +42,6 @@ namespace Game
         [SerializeField] private GameObject _storeMenu;
         [SerializeField] private CustomButton _confirmButton;
         private bool _isStorePhrase;
-        #endregion
 
         #region Unity functions
         protected override void ChildAwake()
@@ -111,15 +107,14 @@ namespace Game
         }
         #endregion
 
-        #region Update UI 
+        #region In game
         public void UpdateDayText()
         {
             _dayText.text = "Day".GetText() + " " + TimeManager.Instance.GetCurrentDay().ToString("00");
         }
         public void UpdateMoney()
         {
-            _moneyText.text = "+" + MoneyManager.Instance.GetMoney().ToString();
-            _tipText.text = "+" + MoneyManager.Instance.GetTip().ToString();
+            _moneyText.text = MoneyManager.Instance.GetMoney().ToString();
         }
         public void UpdateTime()
         {
@@ -128,9 +123,6 @@ namespace Game
 
             _timeText.text = $"{hour.ToString("00")}:{minute.ToString("00")}";
         }
-        #endregion
-
-        #region Show hide
         private void HideIngameMenu()
         {
             _ingameMenu.SetActive(false);
