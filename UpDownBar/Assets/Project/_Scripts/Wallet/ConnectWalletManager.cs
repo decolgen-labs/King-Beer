@@ -6,6 +6,13 @@ using UnityEngine;
 
 namespace Game
 {
+    public static class PlayerData
+    {
+        public static string PlayerAddress;
+        public static int InGamePoint;
+        public static int SahPoint;
+    }
+
     public class ConnectWalletManager : MonoBehaviorInstance<ConnectWalletManager>
     {
         [SerializeField] private Transform _gameUITransform;
@@ -35,8 +42,8 @@ namespace Game
         {
             walletAction?.Invoke();
             yield return new WaitUntil(() => JSInteropManager.IsConnected());
-            
-            PlayerPrefs.SetString("PlayerAddress", JSInteropManager.GetAccount());
+
+            PlayerData.PlayerAddress = JSInteropManager.GetAccount();
             _connectWalletUI.Close();
             _onSuccess.Invoke();
         }

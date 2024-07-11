@@ -15,6 +15,7 @@ namespace Game
         public Action OnCustomerReturn;
         #endregion
 
+        #region Variable
         [Header("Component")]
         [SerializeField] private CustomerView _customerView;
 
@@ -22,17 +23,19 @@ namespace Game
         [SerializeField] private WaitingUI _waitingUI;
         [SerializeField] private float _maxWaitingTime;
         [SerializeField] private float _waitLossSpeed = 1f;
+        [SerializeField] private int _money = 5;
 
         private float _waitTimer = 0;
         private bool _isWaiting;
 
-        [SerializeField] private int _money = 5;
+        private Transform _coinTrans;
         private Vector3 _targetSeat;
         private float _speed = 4f;
         private float _rotateSpeed = 10;
         private bool _isRequestBeer;
         private bool _isServed;
         private bool _isReturnCalled;
+        #endregion
 
         #region Unity functions
         void OnEnable()
@@ -61,6 +64,13 @@ namespace Game
             {
                 Destroy(other.gameObject);
                 Complete();
+                if(_coinTrans != null)
+                {
+                    // Trigger event to get reward coin
+                    _coinTrans.transform.DOMoveY(_coinTrans.transform.position.y + 1f, 0.5f);
+                    _coinTrans.transform.DOScale(0, 0.4f);
+                    NoodyCustomCode.StartDelayFunction(() => Destroy(_coinTrans.gameObject), 0.5f);
+                }
             }
         }
         #endregion
@@ -72,6 +82,7 @@ namespace Game
         }
         #endregion
 
+        #region Private functions
         private void Move()
         {
             float distance = Vector3.Distance(this.transform.position, _targetSeat);
@@ -108,20 +119,6 @@ namespace Game
                 Return(); // Return and no money
             }
         }
-        public void SetTargetPosition(Vector3 position)
-        {
-            _targetSeat = position;
-        }
-
-        public void Complete()
-        {
-            Return();
-            // Pay money
-            TextPopup.Show("+" + _money, this.transform.position, Color.yellow);
-            MoneyManager.Instance.AddMoney(_money);
-            BeerServeManager.Instance.OnServeComplete?.Invoke(this);
-            _isWaiting = false;
-        }
         private void Return()
         {
             if (_isReturnCalled == true) return;
@@ -147,5 +144,26 @@ namespace Game
             _customerView.StopAllAnimation();
             Destroy(this.gameObject, 1f);
         }
+        #endregion
+
+        #region Public functions
+        public void SetTargetPosition(Vector3 position)
+        {
+            _targetSeat = position;
+        }
+        public void Complete()
+        {
+            Return();
+            // Pay money
+            TextPopup.Show("+" + _money, this.transform.position, Color.yellow);
+            MoneyManager.Instance.AddMoney(_money);
+            BeerServeManager.Instance.OnServeComplete?.Invoke(this);
+            _isWaiting = false;
+        }
+        public void SetCoin(Transform coin)
+        {
+            _coinTrans = coin;
+        }
+        #endregion
     }
 }

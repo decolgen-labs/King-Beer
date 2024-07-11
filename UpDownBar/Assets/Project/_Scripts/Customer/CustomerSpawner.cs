@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace Game
 {
     public class CustomerSpawner : MonoBehaviorInstance<CustomerSpawner>
     {
+        public Action<Customer> onCustomerSpawn;
+
         [SerializeField] private Transform _customerPref;
         [SerializeField] private float _spawnTime;
 
@@ -28,10 +31,11 @@ namespace Game
                     Customer customer = Instantiate(_customerPref, this.transform.position, Quaternion.identity).GetComponent<Customer>();
 
                     // Get random seat
-                    int r = Random.Range(0, availableTable.Count - 1);
+                    int r = UnityEngine.Random.Range(0, availableTable.Count - 1);
                     Transform seat = availableTable[r].GetSeatForCustomer(customer);
                     // Check if seat valid
                     customer.SetTargetPosition(seat.position);
+                    onCustomerSpawn?.Invoke(customer);
                 }
             }
         }
