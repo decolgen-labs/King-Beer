@@ -23,7 +23,8 @@ namespace Game
         [SerializeField] private TextMeshProUGUI _timeText;
         [SerializeField] private Image _timeBG;
         [SerializeField] private TextMeshProUGUI _dayText;
-        [SerializeField] private CustomButton _pauseGameBtn;
+        [SerializeField] private CustomButton _pauseGameBtn, _playerInfo;
+        [SerializeField] private PlayerInfoPanel _playerInfoPanel;
         private Color _timeOriginalColor;
 
         [Header("End day menu")]
@@ -48,6 +49,7 @@ namespace Game
         {
             _endDayMenu.SetActive(false);
             _pauseGameMenu.SetActive(false);
+            _playerInfo.OnClick += OnPlayerInfoClickHandler;
             _pauseGameBtn.OnClick += OnPauseButtonClickHandler;
             _pResumeBtn.OnClick += OnResumeClickHandler;
             _shopBtn.OnClick += () =>
@@ -71,6 +73,7 @@ namespace Game
             OnNextDayPressed += HideEndDayPanel;
             _timeOriginalColor = _timeBG.color;
         }
+
         private void Start()
         {
             UpdateDayText();
@@ -108,6 +111,18 @@ namespace Game
         #endregion
 
         #region In game
+        private void OnPlayerInfoClickHandler()
+        {
+            if(_playerInfoPanel.isActiveAndEnabled)
+            {
+                _playerInfoPanel.Close();
+            }
+            else
+            {
+                _playerInfoPanel.gameObject.SetActive(true);
+                _playerInfoPanel.Open();
+            }
+        }
         public void UpdateDayText()
         {
             _dayText.text = "Day".GetText() + " " + TimeManager.Instance.GetCurrentDay().ToString("00");
