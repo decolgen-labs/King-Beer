@@ -46,13 +46,21 @@ namespace Game
 
         private void OnPlayBtnClick()
         {
-            if(JSInteropManager.IsConnected() == false)
+            if(Application.isEditor)
             {
-                ConnectWalletManager.Instance.StartConnectWallet(() => TransitionManager.Instance().Transition("GameScene", _transitionSetting, 0.3f));
+                Debug.Log("Pass login");
+                TransitionManager.Instance().Transition("GameScene", _transitionSetting, 0.3f);
             }
             else
             {
-                TransitionManager.Instance().Transition("GameScene", _transitionSetting, 0.3f);
+                if(JSInteropManager.IsConnected() == false)
+                {
+                    ConnectWalletManager.Instance.StartConnectWallet(() => TransitionManager.Instance().Transition("GameScene", _transitionSetting, 0.3f));
+                }
+                else
+                {
+                    TransitionManager.Instance().Transition("GameScene", _transitionSetting, 0.3f);
+                }
             }
         }
 

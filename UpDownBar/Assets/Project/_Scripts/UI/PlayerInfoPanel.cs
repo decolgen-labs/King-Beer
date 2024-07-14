@@ -23,10 +23,17 @@ namespace Game
         void Start()
         {
             UpdatePlayerAddress();
+            UpdatePoint();
         }
 
+        public void UpdateUI()
+        {
+            UpdatePlayerAddress();
+            UpdatePoint();
+        }
         private void UpdatePoint()
         {
+            Debug.Log("Sah: " + PlayerData.SahPoint);
             _ingamePointText.text = PlayerData.InGamePoint.ToString();
             _sahPointText.text = PlayerData.SahPoint.ToString();
         }
@@ -39,6 +46,7 @@ namespace Game
         }
         private void OnClaimBtnClick()
         {
+            ConnectWalletManager.Instance.Claim();
         }
 
         public void Open()

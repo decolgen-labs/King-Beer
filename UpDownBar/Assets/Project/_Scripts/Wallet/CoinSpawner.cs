@@ -8,23 +8,28 @@ namespace Game
     public class CoinSpawner : MonoBehaviour
     {
         [SerializeField] private GameObject _coinPref;
-        private int _customerNumberToSpawnCoin;
+        private bool _isSpawnCoin;
 
         void Start()
         {
             CustomerSpawner.Instance.onCustomerSpawn += CustomerSpawner_OnCustomerSpawn;
-            _customerNumberToSpawnCoin = UnityEngine.Random.Range(10, 20);
+            JsSocketConnect.RegisterSpawnCoin(this.gameObject.name, nameof(SpawnCoin));            
+        }
+
+        private void SpawnCoin()
+        {
+            _isSpawnCoin = true;
         }
 
         private void CustomerSpawner_OnCustomerSpawn(Customer customer)
         {
-            if(_customerNumberToSpawnCoin-- == 0)
+            if(_isSpawnCoin)
             {
                 GameObject coin = Instantiate(_coinPref, customer.transform);
                 coin.transform.localPosition = new Vector3(0, 2.7f, 0);
                 customer.SetCoin(coin.transform);
-                _customerNumberToSpawnCoin = UnityEngine.Random.Range(10, 20);
-            }            
+                _isSpawnCoin = false;
+            }
         }
     }
 }

@@ -53,6 +53,7 @@
     },
     "dotnet.defaultSolution": "UpDownBar.sln",
     "cSpell.words": [
+        "apiurl",
         "braavos"
     ]
 }
