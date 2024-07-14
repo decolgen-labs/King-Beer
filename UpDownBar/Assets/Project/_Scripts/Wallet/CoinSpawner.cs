@@ -13,7 +13,7 @@ namespace Game
         void Start()
         {
             CustomerSpawner.Instance.onCustomerSpawn += CustomerSpawner_OnCustomerSpawn;
-            JsSocketConnect.RegisterSpawnCoin(this.gameObject.name, nameof(SpawnCoin));            
+            JsSocketConnect.OnEvent("spawnCoin", this.gameObject.name, nameof(SpawnCoin));            
         }
 
         private void SpawnCoin()
