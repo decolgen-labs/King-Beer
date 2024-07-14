@@ -39,8 +39,8 @@ namespace Game
 
         void Start()
         {
-            JsSocketConnect.RegisterUpdateCoin(this.gameObject.name, nameof(OnUpdateSocketCoin));
-            JsSocketConnect.RegisterUpdateProof(this.gameObject.name, nameof(OnUpdateProof));
+            JsSocketConnect.OnEvent("updateCoin", this.gameObject.name, nameof(OnUpdateSocketCoin));
+            JsSocketConnect.OnEvent("updateProof", this.gameObject.name, nameof(OnUpdateProof));
         }
 
         public void StartConnectWallet(Action onSuccess)
@@ -125,7 +125,8 @@ namespace Game
 
         private void ClaimCallback(string response)
         {
-            if(response == "User abort")
+            Debug.Log("claim response: " + response);
+            if(response == "User abort" || response == "Execute failed")
             {
                 // user decline
                 Debug.Log("Response: " + response);

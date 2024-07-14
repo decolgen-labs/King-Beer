@@ -1,6 +1,9 @@
 mergeInto(LibraryManager.library, {
+
     SocketIOInit:function()
     {
+        this.objectNameDic = {};
+        this.methodNameDic = {};
         if(typeof io == 'undefined')
         {
             console.error('Socket.IO client library is not load');
@@ -15,47 +18,33 @@ mergeInto(LibraryManager.library, {
         });
 
         socket.on('updateBrushPosition', () => {
-            if(this.debugObjectStr && this.debugObjectStr)
-                SendMessage(this.debugObjectStr, this.debugMethodStr);
+            if(this.objectNameDic.updateBrushPosition && this.methodNameDic.updateBrushPosition)
+                SendMessage(this.objectNameDic.updateBrushPosition, this.methodNameDic.updateBrushPosition);
         });
 
         socket.on('updateCoin', (coin) => {
-            if(this.updateCoinObjectStr && this.updateCoinMethodStr)
-                SendMessage(this.updateCoinObjectStr, this.updateCoinMethodStr, coin);
+            if(this.objectNameDic.updateCoin && this.methodNameDic.updateCoin)
+                SendMessage(this.objectNameDic.updateCoin.toString(), this.methodNameDic.updateCoin.toString(), coin);
         });
 
         socket.on('spawnCoin', () => {
-            if(this.spawnCoinObjectStr && this.spawnCoinMethodStr)
-                SendMessage(this.spawnCoinObjectStr, this.spawnCoinMethodStr);
+            if(this.objectNameDic.spawnCoin && this.methodNameDic.spawnCoin)
+                SendMessage(this.objectNameDic.spawnCoin, this.methodNameDic.spawnCoin);
         });
 
         socket.on('updateProof', (proof) => {
-            if(this.updateProofObjectStr && this.updateProofMethodStr)
-                SendMessage(this.updateProofObjectStr , this.updateProofMethodStr, proof);
+            if(this.objectNameDic.updateProof && this.methodNameDic.updateProof)
+                SendMessage(this.objectNameDic.updateProof , this.methodNameDic.updateProof, proof);
         });
 
         window.unitySocket = socket;
     },
 
-    RegisterDebug:function(callbackObjectName, callbackMethodName)
+    OnEvent:function(eventName, callbackObjectName, callbackMethodName)
     {
-        this.debugObjectStr = UTF8ToString(callbackObjectName);
-        this.debugMethodStr = UTF8ToString(callbackMethodName);
-    },
-    RegisterUpdateCoin:function(callbackObjectName, callbackMethodName)
-    {
-        this.updateCoinObjectStr = UTF8ToString(callbackObjectName);
-        this.updateCoinMethodStr = UTF8ToString(callbackMethodName);
-    },
-    RegisterSpawnCoin:function(callbackObjectName, callbackMethodName)
-    {
-        this.spawnCoinObjectStr = UTF8ToString(callbackObjectName);
-        this.spawnCoinMethodStr = UTF8ToString(callbackMethodName);
-    },
-    RegisterUpdateProof:function(callbackObjectName, callbackMethodName)
-    {
-        this.updateProofObjectStr = UTF8ToString(callbackObjectName);
-        this.updateProofMethodStr = UTF8ToString(callbackMethodName);
+        let event = UTF8ToString(eventName);
+        this.objectNameDic[event] = UTF8ToString(callbackObjectName);
+        this.methodNameDic[event] = UTF8ToString(callbackMethodName);
     },
 
     EmitEvent:function(eventName, dataArray)
