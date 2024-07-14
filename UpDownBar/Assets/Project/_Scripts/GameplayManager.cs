@@ -11,6 +11,7 @@ namespace Game
         public Action OnNextDay;
         public Action OnPausePressed;
         public bool IsEndDay;
+        public bool IsPlaying;
 
         void Start()
         {

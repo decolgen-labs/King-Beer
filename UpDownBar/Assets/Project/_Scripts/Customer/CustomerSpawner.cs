@@ -36,6 +36,10 @@ namespace Game
                     // Check if seat valid
                     customer.SetTargetPosition(seat.position);
                     onCustomerSpawn?.Invoke(customer);
+
+                    // emit socket event to server
+                    if(GameplayManager.Instance.IsPlaying)
+                        JsSocketConnect.EmitEvent("spawnCustomer");
                 }
             }
         }

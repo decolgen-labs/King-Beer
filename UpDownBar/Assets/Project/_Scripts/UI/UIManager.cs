@@ -123,6 +123,10 @@ namespace Game
                 _playerInfoPanel.Open();
             }
         }
+        public void UpdatePlayerInfoPanel()
+        {
+            _playerInfoPanel.UpdateUI();
+        }
         public void UpdateDayText()
         {
             _dayText.text = "Day".GetText() + " " + TimeManager.Instance.GetCurrentDay().ToString("00");
