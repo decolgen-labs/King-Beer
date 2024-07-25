@@ -39,7 +39,17 @@ namespace Game
 
                     // emit socket event to server
                     if(GameplayManager.Instance.IsPlaying)
-                        JsSocketConnect.EmitEvent("spawnCustomer");
+                    {
+                        if(Application.isEditor)
+                        {
+                            if(SocketConnectManager.Instance)
+                                SocketConnectManager.Instance.EmitEvent("spawnCustomer");
+                        }
+                        else
+                        {
+                            JsSocketConnect.EmitEvent("spawnCustomer");
+                        }
+                    }
                 }
             }
         }

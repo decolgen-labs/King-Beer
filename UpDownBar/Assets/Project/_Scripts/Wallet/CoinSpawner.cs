@@ -13,11 +13,21 @@ namespace Game
         void Start()
         {
             CustomerSpawner.Instance.onCustomerSpawn += CustomerSpawner_OnCustomerSpawn;
-            JsSocketConnect.OnEvent("spawnCoin", this.gameObject.name, nameof(SpawnCoin));            
+            if(Application.isEditor)
+            {
+                Debug.Log("Subscribe spawnCoin");
+                if(SocketConnectManager.Instance)
+                    SocketConnectManager.Instance.OnEvent("spawnCoin", SpawnCoin);
+            }
+            else
+            {
+                JsSocketConnect.OnEvent("spawnCoin", this.gameObject.name, nameof(SpawnCoin));            
+            }
         }
 
-        private void SpawnCoin()
+        private void SpawnCoin(string data)
         {
+            Debug.Log("spawnCoin");
             _isSpawnCoin = true;
         }
 

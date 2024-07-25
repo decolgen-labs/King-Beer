@@ -7,6 +7,8 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 using NOOD.Sound;
 using EasyTransition;
+using Cysharp.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 namespace Game
 {
@@ -29,8 +31,10 @@ namespace Game
 
         [Header("End day menu")]
         [SerializeField] private GameObject _endDayMenu;
-        [SerializeField] private TextMeshProUGUI _money;
-        [SerializeField] private CustomButton _shopBtn, _nextDayBtn;
+        [SerializeField] private TextMeshProUGUI _totalMoney;
+        [SerializeField] private TextMeshProUGUI _targetMoney, _nextTargetMoney;
+        [SerializeField] private TextMeshProUGUI _resultText;
+        [SerializeField] private CustomButton _shopBtn, _nextDayBtn, _mainMenuBtn;
         [SerializeField] private float _moneyIncreaseSpeed = 30;
 
         [Header("Pause game menu")]
@@ -69,6 +73,11 @@ namespace Game
                 HideStoreMenu();
                 _isStorePhrase = false;
             };
+            _mainMenuBtn.OnClick += () =>
+            {
+                PlayerPrefs.DeleteAll();
+                SceneManager.LoadScene("MainMenu");
+            };
             HideStoreMenu();
             OnNextDayPressed += HideEndDayPanel;
             _timeOriginalColor = _timeBG.color;
@@ -77,7 +86,7 @@ namespace Game
         private void Start()
         {
             UpdateDayText();
-            UpdateMoney();
+            UpdateInDayMoney();
             _timeBG.color = _timeOriginalColor;
             TimeManager.Instance.OnTimeWarning += () => 
             { 
@@ -88,9 +97,12 @@ namespace Game
                 _timeBG.color = _timeOriginalColor;
             };
             GameplayManager.Instance.OnEndDay += OnEndDayHandler;
+            GameplayManager.Instance.OnNextDay += OnNextDayHandler;
             TimeManager.OnTimePause += ShowPauseGameMenu;
             TimeManager.OnTimeResume += HidePauseGameMenu;
         }
+
+
         private void Update()
         {
             if (GameplayManager.Instance.IsEndDay) return;
@@ -129,11 +141,11 @@ namespace Game
         }
         public void UpdateDayText()
         {
-            _dayText.text = "Day".GetText() + " " + TimeManager.Instance.GetCurrentDay().ToString("00");
+            _dayText.text = "Day".GetText() + " " + TimeManager.Instance.CurrentDay.ToString("00");
         }
-        public void UpdateMoney()
+        public void UpdateInDayMoney()
         {
-            _moneyText.text = MoneyManager.Instance.GetMoney().ToString();
+            _moneyText.text = MoneyManager.Instance.CurrentTotalMoney.ToString();
         }
         public void UpdateTime()
         {
@@ -153,14 +165,30 @@ namespace Game
         #endregion
 
         #region End game
+        private void OnNextDayHandler()
+        {
+            UpdateInDayMoney();
+        }
         private void OnEndDayHandler()
         {
             OpenEndDayPanel();
             MoneyManager.Instance.Save();
         }
-        private void OpenEndDayPanel()
+        private async void OpenEndDayPanel()
         {
-            PlayMoneyAnimation(MoneyManager.Instance.GetMoney());
+            await PlayMoneyAnimation(MoneyManager.Instance.CurrentTotalMoney);
+            if(GameplayManager.Instance.IsWin)
+            {
+                _mainMenuBtn.gameObject.SetActive(false);
+                _shopBtn.gameObject.SetActive(true);
+                _nextDayBtn.gameObject.SetActive(true);
+            }
+            else
+            {
+                _mainMenuBtn.gameObject.SetActive(true);
+                _shopBtn.gameObject.SetActive(false);
+                _nextDayBtn.gameObject.SetActive(false);
+            }
             SoundManager.PlaySound(SoundEnum.MoneySound);
             _ingameMenu.SetActive(false);
             _endDayMenu.SetActive(true);
@@ -172,17 +200,35 @@ namespace Game
             _ingameMenu.SetActive(true);
             _endDayMenu.transform.DOScale(Vector3.zero, 0.7f).OnComplete(() => _endDayMenu.SetActive(false));
         }
-        private void PlayMoneyAnimation(int money)
+        private async UniTask PlayMoneyAnimation(int money)
         {
             float time = 0;
             float temp = 0;
-            NoodyCustomCode.StartUpdater(this, () =>
+
+            _targetMoney.text = MoneyManager.Instance.CurrentTarget.ToString();
+            _nextTargetMoney.text = MoneyManager.Instance.NextTarget.ToString();
+            _resultText.gameObject.SetActive(false);
+
+            // Show currentTotalMoney
+            while(temp < money)
             {
+                await UniTask.Yield();
                 time += Time.unscaledDeltaTime * _moneyIncreaseSpeed;
                 temp = Mathf.Lerp(0, money, time/SoundManager.GetSoundLength(SoundEnum.MoneySound));
-                _money.text = temp.ToString("0");
-                return temp > money;
-            });
+                _totalMoney.text = temp.ToString();
+            }
+
+            _resultText.gameObject.SetActive(true);
+            if(GameplayManager.Instance.IsWin)
+            {
+                _resultText.text = "CONGRATULATION";
+                _resultText.color = Color.green;
+            }
+            else
+            {
+                _resultText.text = "YOU LOSE";
+                _resultText.color = Color.red;
+            }
         }
         private void ActiveStorePhrase()
         {
@@ -220,8 +266,8 @@ namespace Game
         }
         private void UpdatePauseText()
         {
-            _pDayText.text = TimeManager.Instance.GetCurrentDay().ToString("00");
-            _pMoneyText.text = MoneyManager.Instance.GetMoney().ToString("0");
+            _pDayText.text = TimeManager.Instance.CurrentDay.ToString("00");
+            _pMoneyText.text = MoneyManager.Instance.CurrentTotalMoney.ToString("0");
         }
         #endregion
  

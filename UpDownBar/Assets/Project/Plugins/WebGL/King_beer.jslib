@@ -10,7 +10,7 @@ mergeInto(LibraryManager.library, {
             return;
         }
 
-        var socket = io('http://localhost:5005');
+        var socket = io('http://localhost:5006');
 
         socket.on('connect', () => {
             socket.isReady = true;

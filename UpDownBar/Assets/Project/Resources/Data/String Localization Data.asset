@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f060d58197dfb694185f1709f3c578a8, type: 3}
   m_Name: String Localization Data
   m_EditorClassIdentifier: 
-  IsEnglish: 0
+  IsEnglish: 1
   _stringDic:
     _pairs:
     - _key: Play
@@ -78,3 +78,19 @@ MonoBehaviour:
       _value:
         Vietnamese: "Qua ng\xE0y"
         English: Next day
+    - _key: 'RentCost:'
+      _value:
+        Vietnamese: "Ti\u1EC1n thu\xEA:"
+        English: 'Rent Cost:'
+    - _key: 'Target:'
+      _value:
+        Vietnamese: "M\u1EE5c ti\xEAu:"
+        English: 'Target:'
+    - _key: 'NextTarget:'
+      _value:
+        Vietnamese: "M\u1EE5c ti\xEAu ti\u1EBFp theo:"
+        English: 'Next Target:'
+    - _key: MainMenu
+      _value:
+        Vietnamese: Main Menu
+        English: Main Menu

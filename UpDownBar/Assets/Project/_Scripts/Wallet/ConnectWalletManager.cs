@@ -34,13 +34,23 @@ namespace Game
         protected override void ChildAwake()
         {
             base.ChildAwake();
+            if (Application.isEditor) return;
             JsSocketConnect.SocketIOInit();
         }
 
         void Start()
         {
-            JsSocketConnect.OnEvent("updateCoin", this.gameObject.name, nameof(OnUpdateSocketCoin));
-            JsSocketConnect.OnEvent("updateProof", this.gameObject.name, nameof(OnUpdateProof));
+            if(Application.isEditor)
+            {
+                Debug.Log("Subscribe update coin");
+                SocketConnectManager.Instance.OnEvent("updateCoin", OnUpdateSocketCoin);
+                SocketConnectManager.Instance.OnEvent("updateProof", OnUpdateProof);
+            }
+            else
+            {
+                JsSocketConnect.OnEvent("updateCoin", this.gameObject.name, nameof(OnUpdateSocketCoin));
+                JsSocketConnect.OnEvent("updateProof", this.gameObject.name, nameof(OnUpdateProof));
+            }
         }
 
         public void StartConnectWallet(Action onSuccess)
@@ -63,8 +73,8 @@ namespace Game
 
         private void OnUpdateSocketCoin(string coin)
         {
-            Debug.Log("Update coin" + coin);
-            PlayerData.InGamePoint = JsonConvert.DeserializeObject<int>(coin);
+            PlayerData.InGamePoint = Convert.ToInt32(coin);
+            Debug.Log("Update coin" + PlayerData.InGamePoint);
             UIManager.Instance.UpdatePlayerInfoPanel();
         }
 
@@ -103,7 +113,10 @@ namespace Game
             string[] datas = new string[] {
                 PlayerData.PlayerAddress
             };
-            JsSocketConnect.EmitEvent("claim", JsonConvert.SerializeObject(new ArrayWrapper { array = datas }));
+            if(Application.isEditor)
+                SocketConnectManager.Instance.EmitEvent("claim", JsonConvert.SerializeObject(new ArrayWrapper { array = datas }));
+            else
+                JsSocketConnect.EmitEvent("claim", JsonConvert.SerializeObject(new ArrayWrapper { array = datas }));
         }
 
         public void SyncPlayerPoint()
@@ -135,7 +148,10 @@ namespace Game
             {
                 // user claim
                 SyncPlayerPoint();
-                JsSocketConnect.EmitEvent("afterClaim");
+                if(Application.isEditor)
+                    SocketConnectManager.Instance.EmitEvent("afterClaim");
+                else
+                    JsSocketConnect.EmitEvent("afterClaim");
             }
         }
     }
