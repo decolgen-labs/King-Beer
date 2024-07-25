@@ -12,6 +12,7 @@ namespace Game
         public Action OnPausePressed;
         public bool IsEndDay;
         public bool IsPlaying;
+        public bool IsWin { get; private set; }
 
         void Start()
         {
@@ -39,6 +40,14 @@ namespace Game
         {
             IsEndDay = true;
             OnEndDay?.Invoke();
+            if(MoneyManager.Instance.CurrentTotalMoney > MoneyManager.Instance.CurrentTarget)
+            {
+                IsWin = true;
+            }
+            else
+            {
+                IsWin = false;
+            }
         }
         private void OnNextDayPressHandler()
         {

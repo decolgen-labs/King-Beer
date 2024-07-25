@@ -1,3 +1,4 @@
+using System;
 using NOOD;
 using NOOD.Data;
 using UnityEngine;
@@ -7,20 +8,42 @@ namespace Game
     public class MoneyManager : MonoBehaviorInstance<MoneyManager>
     {
         const string SAVE_ID = "Money";
-        private int _money;
+
+        public int CurrentTarget => _currentTarget;
+        public int NextTarget => _currentTarget + TimeManager.Instance.CurrentDay * 10;
+        public int CurrentTotalMoney => _totalMoney;
+        
+        private int _totalMoney;
+        private int _currentTarget;
+
         protected override void ChildAwake()
         {
-            _money = DataManager<int>.LoadDataFromPlayerPrefWithGenId(SAVE_ID, 0);
-            Debug.Log(_money);
+            _totalMoney = DataManager<int>.LoadDataFromPlayerPrefWithGenId(SAVE_ID, 0);
+            Debug.Log(_totalMoney);
+            _currentTarget = 150;
         }
 
-        public int GetMoney() => _money;
+        void Start()
+        {
+            GameplayManager.Instance.OnNextDay += GameplayManager_OnNextDayHandler;
+        }
+
+
+        void OnDisable()
+        {
+            NoodyCustomCode.UnSubscribeAllEvent(GameplayManager.Instance, this);
+        }
+
+        private void GameplayManager_OnNextDayHandler()
+        {
+            _currentTarget = NextTarget;
+        }
         public bool PayMoney(int amount)
         {
-            if (_money >= amount)
+            if (_totalMoney >= amount)
             {
-                _money -= amount;
-                UIManager.Instance.UpdateMoney();
+                _totalMoney -= amount;
+                UIManager.Instance.UpdateInDayMoney();
                 return true;
             }
             else
@@ -32,17 +55,17 @@ namespace Game
         /// <param name="amount"></param>
         public void RemoveMoney(int amount)
         {
-            _money -= amount;
-            UIManager.Instance.UpdateMoney();
+            _totalMoney = amount;
+            UIManager.Instance.UpdateInDayMoney();
         }
         public void AddMoney(int amount)
         {
-            _money += amount;
-            UIManager.Instance.UpdateMoney();
+            _totalMoney += amount;
+            UIManager.Instance.UpdateInDayMoney();
         }
         public void Save()
         {
-            _money.SaveWithId(SAVE_ID);
+            _totalMoney.SaveWithId(SAVE_ID);
         }
     }
 

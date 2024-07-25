@@ -33,6 +33,7 @@ namespace Game
         }
         private void UpdatePoint()
         {
+            Debug.Log("UI: " + PlayerData.InGamePoint);
             Debug.Log("Sah: " + PlayerData.SahPoint);
             _ingamePointText.text = PlayerData.InGamePoint.ToString();
             _sahPointText.text = PlayerData.SahPoint.ToString();

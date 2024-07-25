@@ -27,6 +27,7 @@ namespace Game
                 s_timeScale = value;
             } 
         }
+        public int CurrentDay => _day;
         #endregion
 
         #region SerializeField
@@ -37,7 +38,7 @@ namespace Game
         #region Private
         private float _hour;
         private float _minute;
-        private float _day = 1;
+        private int _day = 1;
         private bool _isWarned, _isTimeUp;
         private bool _isPause;
         #endregion
@@ -110,10 +111,6 @@ namespace Game
         private void NextDay()
         {
             _day += 1;
-        }
-        public float GetCurrentDay()
-        {
-            return _day;
         }
         private void Warning()
         {
