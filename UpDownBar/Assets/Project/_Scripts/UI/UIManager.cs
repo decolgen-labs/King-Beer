@@ -172,7 +172,6 @@ namespace Game
         private void OnEndDayHandler()
         {
             OpenEndDayPanel();
-            MoneyManager.Instance.Save();
         }
         private async void OpenEndDayPanel()
         {

@@ -55,7 +55,9 @@ namespace Game
             GameplayManager.Instance.OnNextDay += ResetTimeScale;
             GameplayManager.Instance.OnNextDay += ResetTime;
             GameplayManager.Instance.OnPausePressed += PauseGame;
+            _day = DataSaveLoadManager.Instance.Day;
         }
+
         private void Update()
         {
             if(_isTimeUp == false)
