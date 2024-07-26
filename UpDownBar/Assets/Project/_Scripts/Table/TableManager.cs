@@ -24,9 +24,9 @@ namespace Game
         private TableData _tableData;
 
         #region Unity Functions
-        protected override void ChildAwake()
+        void Start()
         {
-            _tableData = DataManager<TableData>.Data;
+            _tableData = DataSaveLoadManager.Instance.TableData;
             for(int i = 0; i < _tableList.Count; i++)
             {
                 if(i >= _tableData.SeatNumberList.Count)
@@ -60,7 +60,6 @@ namespace Game
         {
             int index = _tableList.IndexOf(table);
             _tableData.SeatNumberList[index] += 1;
-            DataManager<TableData>.QuickSave();
         }
         private void OnPlayerChangePositionHandler(int index)
         {

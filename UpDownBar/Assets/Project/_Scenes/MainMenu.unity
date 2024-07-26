@@ -436,7 +436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &170171281
 RectTransform:
   m_ObjectHideFlags: 0
@@ -920,6 +920,7 @@ Transform:
   - {fileID: 1978332770}
   - {fileID: 1036350455}
   - {fileID: 875292502}
+  - {fileID: 1992662677}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &345125115
@@ -1359,7 +1360,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "CH\u01A0I"
+  m_text: PLAY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 92e1b1b58b22e9e45b8f04ee0417818b, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: fd61246583456864b849c14db4055bdc, type: 2}
@@ -1493,7 +1494,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Tho\xE1t"
+  m_text: Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 92e1b1b58b22e9e45b8f04ee0417818b, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: fd61246583456864b849c14db4055bdc, type: 2}
@@ -1749,7 +1750,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!114 &650229427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2285,7 +2286,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!114 &843822430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4642,6 +4643,67 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   haveZeroPos: 0
+--- !u!1 &1992662676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1992662677}
+  - component: {fileID: 1992662678}
+  - component: {fileID: 1992662679}
+  m_Layer: 0
+  m_Name: DataSaveLoadManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1992662677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992662676}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 345125114}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1992662678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992662676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8132b39e289c1c44a566da4bc1dd4d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tableData:
+    SeatNumberList: 
+  Day: 0
+  Money: 0
+--- !u!114 &1992662679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992662676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9afcc7deeb4c984a91bab696fee15f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2038089746 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1627689132429259055, guid: e4688252d23978f4da309fc6540cc5e1,
@@ -4922,7 +4984,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "H\u01B0\u1EDBng d\u1EABn"
+  m_text: How To Play
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 92e1b1b58b22e9e45b8f04ee0417818b, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: fd61246583456864b849c14db4055bdc, type: 2}

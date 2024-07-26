@@ -90,7 +90,3 @@ MonoBehaviour:
       _value:
         Vietnamese: "M\u1EE5c ti\xEAu ti\u1EBFp theo:"
         English: 'Next Target:'
-    - _key: MainMenu
-      _value:
-        Vietnamese: Main Menu
-        English: Main Menu
