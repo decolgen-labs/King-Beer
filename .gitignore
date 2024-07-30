@@ -72,3 +72,4 @@ Final_Project_Game/.vsconfig
 ignore.conf
 .plastic/
 UpDownBar/Recordings/
+/node_modules
