@@ -32,7 +32,7 @@ namespace Game
         [Header("End day menu")]
         [SerializeField] private GameObject _endDayMenu;
         [SerializeField] private TextMeshProUGUI _totalMoney;
-        [SerializeField] private TextMeshProUGUI _targetMoney, _nextTargetMoney;
+        [SerializeField] private TextMeshProUGUI _targetMoney, _profitMoney, _bonusMoney;
         [SerializeField] private TextMeshProUGUI _resultText;
         [SerializeField] private CustomButton _shopBtn, _nextDayBtn, _mainMenuBtn;
         [SerializeField] private float _moneyIncreaseSpeed = 30;
@@ -69,7 +69,7 @@ namespace Game
             };
             _confirmButton.OnClick += () => 
             {
-                OpenEndDayPanel();
+                ShowEndDayPanel(false);
                 HideStoreMenu();
                 _isStorePhrase = false;
             };
@@ -171,11 +171,15 @@ namespace Game
         }
         private void OnEndDayHandler()
         {
-            OpenEndDayPanel();
+            ShowEndDayPanel(true);
         }
-        private async void OpenEndDayPanel()
+        private async void ShowEndDayPanel(bool isUpdate = false)
         {
-            await PlayMoneyAnimation(MoneyManager.Instance.CurrentTotalMoney);
+            if(isUpdate)
+            {
+                await PlayMoneyAnimation(MoneyManager.Instance.CurrentTotalMoney);
+                MoneyManager.Instance.CommitEndDay();
+            }
             if(GameplayManager.Instance.IsWin)
             {
                 _mainMenuBtn.gameObject.SetActive(false);
@@ -205,7 +209,8 @@ namespace Game
             float temp = 0;
 
             _targetMoney.text = MoneyManager.Instance.CurrentTarget.ToString();
-            _nextTargetMoney.text = MoneyManager.Instance.NextTarget.ToString();
+            _profitMoney.text = (MoneyManager.Instance.CurrentTotalMoney - MoneyManager.Instance.CurrentTarget).ToString();
+            _bonusMoney.text = MoneyManager.Instance.Bonus.ToString();
             _resultText.gameObject.SetActive(false);
 
             // Show currentTotalMoney
@@ -231,6 +236,7 @@ namespace Game
         }
         private void ActiveStorePhrase()
         {
+            UpdateInDayMoney();
             HideEndDayPanel();
             ShowStoreMenu();
             OnStorePhrase?.Invoke();

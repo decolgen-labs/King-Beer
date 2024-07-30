@@ -12,7 +12,7 @@ namespace Game
 
         [SerializeField] private TextMeshProUGUI _moneyText;
         [SerializeField] private CustomButton _upgradeButton;
-        private UpgradeBase _upgradeBase;
+        [SerializeField] private UpgradeBase _upgradeBase;
         
         void Start()
         {
@@ -20,16 +20,12 @@ namespace Game
         }
         void OnEnable()
         {
+            UpdateMoneyText();
             OnUpgradeButtonClick += UpdateMoneyText;
         }
         void OnDisable()
         {
             OnUpgradeButtonClick -= UpdateMoneyText;
-        }
-
-        public void SetParent(UpgradeBase upgradeBase)
-        {
-            _upgradeBase = upgradeBase;
         }
 
         public void SetPosition(Vector3 position)

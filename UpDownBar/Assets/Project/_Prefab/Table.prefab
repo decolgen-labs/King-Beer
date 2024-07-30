@@ -719,6 +719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moneyText: {fileID: 6695035025726916810}
   _upgradeButton: {fileID: 4817314583788369520}
+  _upgradeBase: {fileID: 6895554189794984334}
 --- !u!1 &8909189380920204818
 GameObject:
   m_ObjectHideFlags: 0
