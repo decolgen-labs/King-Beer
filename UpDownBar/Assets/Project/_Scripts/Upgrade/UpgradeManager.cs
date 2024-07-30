@@ -19,7 +19,6 @@ namespace Game
                 upgradeBase.Upgrade();
                 if(_upgradeBaseList.Contains(upgradeBase))
                 {
-                    int index = _upgradeBaseList.IndexOf(upgradeBase);
                     upgradeBase.UpdatePrice();
                 }
                 else

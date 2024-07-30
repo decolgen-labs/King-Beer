@@ -6,8 +6,8 @@ namespace Game
 {
     public abstract class UpgradeBase : MonoBehaviour
     {
-        public int Price = 100;
-        public float PriceMultipler = 1.5f;
+        [HideInInspector] public int Price;
+        [HideInInspector] public float PriceMultipler;
     
         [SerializeField] protected UpgradeUI _upgradeUI;
         [SerializeField] protected UpgradeAction _upgradeAction;
@@ -16,7 +16,7 @@ namespace Game
         #region Unity functions
         protected void Awake()
         {
-            _upgradeUI.SetParent(this);
+            PriceMultipler = 2f;
             HideUI();
             ChildAwake();
         }

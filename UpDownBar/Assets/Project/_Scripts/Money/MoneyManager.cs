@@ -1,14 +1,15 @@
 using NOOD;
-using NOOD.Data;
 using UnityEngine;
 
 namespace Game
 {
     public class MoneyManager : MonoBehaviorInstance<MoneyManager>
     {
+        [SerializeField] private int _bonus = 40;
         public int CurrentTarget => _currentTarget;
-        public int NextTarget => _currentTarget + TimeManager.Instance.CurrentDay * 20;
+        public int NextTarget => _currentTarget + _bonus;
         public int CurrentTotalMoney => _totalMoney;
+        public int Bonus => _bonus;
         
         private int _totalMoney;
         private int _currentTarget;
@@ -35,6 +36,12 @@ namespace Game
             _currentTarget = NextTarget;
             Debug.Log("Target: " + _currentTarget);
         }
+
+        public void CommitEndDay()
+        {
+            _totalMoney -= CurrentTarget;
+        }
+
         public bool PayMoney(int amount)
         {
             if (_totalMoney >= amount)
