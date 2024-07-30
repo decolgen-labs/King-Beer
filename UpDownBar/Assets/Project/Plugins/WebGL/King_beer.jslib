@@ -30,7 +30,7 @@ mergeInto(LibraryManager.library, {
 
         socket.on('spawnCoin', () => {
             if(this.objectNameDic.spawnCoin && this.methodNameDic.spawnCoin)
-                SendMessage(this.objectNameDic.spawnCoin, this.methodNameDic.spawnCoin);
+                SendMessage(this.objectNameDic.spawnCoin, this.methodNameDic.spawnCoin, 'SpawnCoin');
         });
 
         socket.on('updateProof', (proof) => {
