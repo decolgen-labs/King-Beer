@@ -110,13 +110,16 @@ namespace Game
 
         public void Claim()
         {
-            string[] datas = new string[] {
-                PlayerData.PlayerAddress
-            };
-            if(Application.isEditor)
-                SocketConnectManager.Instance.EmitEvent("claim", JsonConvert.SerializeObject(new ArrayWrapper { array = datas }));
-            else
-                JsSocketConnect.EmitEvent("claim", JsonConvert.SerializeObject(new ArrayWrapper { array = datas }));
+            if(PlayerData.InGamePoint > 0)
+            {
+                string[] datas = new string[] {
+                    PlayerData.PlayerAddress
+                };
+                if(Application.isEditor)
+                    SocketConnectManager.Instance.EmitEvent("claim", JsonConvert.SerializeObject(new ArrayWrapper { array = datas }));
+                else
+                    JsSocketConnect.EmitEvent("claim", JsonConvert.SerializeObject(new ArrayWrapper { array = datas }));
+            }
         }
 
         public void SyncPlayerPoint()
