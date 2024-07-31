@@ -13,13 +13,16 @@ namespace Game
         [SerializeField] private TextMeshProUGUI _playerAddressText, _ingamePointText, _sahPointText;
         [SerializeField] private Button _claimBtn, _logOutBtn;
 
-        void Awake()
+        void OnEnable()
         {
             _claimBtn.onClick.AddListener(OnClaimBtnClick);
             _logOutBtn.onClick.AddListener(OnLogOutBtnClick);
         }
-
-
+        void OnDisable()
+        {
+            _claimBtn.onClick.RemoveListener(OnClaimBtnClick);
+            _logOutBtn.onClick.RemoveListener(OnLogOutBtnClick);
+        }
         void Start()
         {
             UpdatePlayerAddress();

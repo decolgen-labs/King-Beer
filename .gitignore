@@ -73,3 +73,4 @@ ignore.conf
 .plastic/
 UpDownBar/Recordings/
 /node_modules
+UpDownBarWebGL.zip
