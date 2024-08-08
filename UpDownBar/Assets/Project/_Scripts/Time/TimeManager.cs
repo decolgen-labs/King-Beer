@@ -31,8 +31,8 @@ namespace Game
         #endregion
 
         #region SerializeField
-        [SerializeField] private float _timeMultipler = 1;
-        [SerializeField] private float _hourInLevel = 12;
+        [SerializeField] private float _timeMultipler;
+        [SerializeField] private float _hourInLevel;
         #endregion
 
         #region Private
@@ -56,24 +56,29 @@ namespace Game
             GameplayManager.Instance.OnNextDay += ResetTime;
             GameplayManager.Instance.OnPausePressed += PauseGame;
             _day = DataSaveLoadManager.Instance.Day;
+            ResetTime();
         }
 
         private void Update()
         {
             if(_isTimeUp == false)
-                _minute += DeltaTime * _timeMultipler * TimeScale;  
+                _minute -= DeltaTime * _timeMultipler * TimeScale;  
             if(_minute >= 59)
             {
                 _hour++;
                 _minute = 0;
             }
-            if(_hour == _hourInLevel)
+            if(_minute < 0)
+            {
+                _hour--;
+                _minute = 59;
+            }
+            if(_hour == 0 && _isWarned == false)
             {
                 // Warning
-                if(_isWarned == false)
-                    Warning();
+                Warning();
             }
-            if(_hour == _hourInLevel + 1 && GameplayManager.Instance.IsEndDay == false)
+            if(_hour < 0 && GameplayManager.Instance.IsEndDay == false)
             {
                 // Stop level
                 if(_isTimeUp == false)
@@ -105,7 +110,8 @@ namespace Game
         }
         private void ResetTime()
         {
-            _hour = 0;
+            Debug.Log("Hours: " + _hourInLevel);
+            _hour = _hourInLevel;
             _minute = 0;
             _isTimeUp = false;
             _isWarned = false;

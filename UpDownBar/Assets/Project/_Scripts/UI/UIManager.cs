@@ -214,7 +214,7 @@ namespace Game
             _resultText.gameObject.SetActive(false);
 
             // Show currentTotalMoney
-            while(temp < money)
+            while(temp != money)
             {
                 await UniTask.Yield();
                 time += Time.unscaledDeltaTime * _moneyIncreaseSpeed;

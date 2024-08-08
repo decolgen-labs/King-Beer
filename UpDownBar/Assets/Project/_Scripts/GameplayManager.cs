@@ -39,7 +39,6 @@ namespace Game
         private void OnTimeUpHandler()
         {
             IsEndDay = true;
-            OnEndDay?.Invoke();
             if(MoneyManager.Instance.CurrentTotalMoney > MoneyManager.Instance.CurrentTarget)
             {
                 IsWin = true;
@@ -48,6 +47,7 @@ namespace Game
             {
                 IsWin = false;
             }
+            OnEndDay?.Invoke();
         }
         private void OnNextDayPressHandler()
         {

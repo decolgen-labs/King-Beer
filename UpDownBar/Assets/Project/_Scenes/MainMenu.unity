@@ -4593,7 +4593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeMultipler: 1
-  _hourInLevel: 12
+  _hourInLevel: 4
 --- !u!1 &1992601369
 GameObject:
   m_ObjectHideFlags: 0
@@ -4688,10 +4688,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8132b39e289c1c44a566da4bc1dd4d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tableData:
+  TableData:
     SeatNumberList: 
   Day: 0
   Money: 0
+  Target: 0
 --- !u!114 &1992662679
 MonoBehaviour:
   m_ObjectHideFlags: 0

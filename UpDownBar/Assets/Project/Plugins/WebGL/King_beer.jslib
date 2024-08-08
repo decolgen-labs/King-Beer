@@ -10,8 +10,8 @@ mergeInto(LibraryManager.library, {
             return;
         }
 
-        // var socket = io('http://localhost:5006');
-        var socket = io('https://brewmaster.starkarcade.com/');
+        var socket = io('http://localhost:5006');
+        // var socket = io('https://brewmaster.starkarcade.com/');
 
         socket.on('connect', () => {
             socket.isReady = true;
@@ -36,6 +36,11 @@ mergeInto(LibraryManager.library, {
         socket.on('updateProof', (proof) => {
             if(this.objectNameDic.updateProof && this.methodNameDic.updateProof)
                 SendMessage(this.objectNameDic.updateProof , this.methodNameDic.updateProof, proof);
+        });
+
+        socket.on('updateAnonymous', (data) => {
+            if(this.objectNameDic.updateAnonymous && this.methodNameDic.updateAnonymous)
+                SendMessage(this.objectNameDic.updateAnonymous, this.methodNameDic.updateAnonymous, data);
         });
 
         window.unitySocket = socket;

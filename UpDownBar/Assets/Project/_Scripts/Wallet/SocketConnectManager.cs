@@ -64,6 +64,15 @@ namespace Game
                 }
             });
 
+            socket.On("updateAnonymous", (data) =>
+            {
+                if(_actionEventDic.ContainsKey("updateAnonymous"))
+                {
+                    string strData = data.GetValue<string>();
+                    _actionEventDic["updateAnonymous"].Invoke(strData);
+                }
+            });
+
             socket.Connect();
 
         }

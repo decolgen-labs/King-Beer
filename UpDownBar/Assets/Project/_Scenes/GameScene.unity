@@ -7427,7 +7427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeMultipler: 6
-  _hourInLevel: 3
+  _hourInLevel: 4
 --- !u!4 &1949967167
 Transform:
   m_ObjectHideFlags: 0

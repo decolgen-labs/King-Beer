@@ -27,6 +27,9 @@ namespace Game
     {
         [SerializeField] private Transform _gameUITransform;
         [SerializeField] private ConnectWalletUI _connectWalletUIPref;
+
+        public bool isAnonymous = false;
+
         private ConnectWalletUI _connectWalletUI;
         private Action _onSuccess;
         private string contractAddress = "0x7bd89ba87f34b47facaeb4d408dadd1915d16a6c828d7ba55692eb705f0a5cc";
@@ -45,13 +48,16 @@ namespace Game
                 Debug.Log("Subscribe update coin");
                 SocketConnectManager.Instance.OnEvent("updateCoin", OnUpdateSocketCoin);
                 SocketConnectManager.Instance.OnEvent("updateProof", OnUpdateProof);
+                SocketConnectManager.Instance.OnEvent("updateAnonymous", OnUpdateAnonymous);
             }
             else
             {
                 JsSocketConnect.OnEvent("updateCoin", this.gameObject.name, nameof(OnUpdateSocketCoin));
                 JsSocketConnect.OnEvent("updateProof", this.gameObject.name, nameof(OnUpdateProof));
+                JsSocketConnect.OnEvent("updateAnonymous", this.gameObject.name, nameof(OnUpdateAnonymous));
             }
         }
+
 
         public void StartConnectWallet(Action onSuccess)
         {
@@ -60,15 +66,35 @@ namespace Game
             _connectWalletUI.Open();
             _connectWalletUI.onArgentXClick = ConnectArgentX;
             _connectWalletUI.onBraavosClick = ConnectBraavos;
+            _connectWalletUI.onAnonymousClick = ConnectAnonymous;
         }
 
         private void ConnectArgentX()
         {
             StartCoroutine(WalletConnectAsync(JSInteropManager.ConnectWalletArgentX));
+            isAnonymous = false;
         }
         private void ConnectBraavos()
         {
             StartCoroutine(WalletConnectAsync(JSInteropManager.ConnectWalletBraavos));
+            isAnonymous = false;
+        }
+        private void ConnectAnonymous()
+        {
+            // Request address and private key from server
+            if(Application.isEditor)
+            {
+                SocketConnectManager.Instance.EmitEvent("anonymousLogin");
+            }
+            else
+            {
+                JsSocketConnect.EmitEvent("anonymousLogin");
+            }
+            isAnonymous = true;
+
+            // Hide UI
+            _connectWalletUI.Close();
+            _onSuccess.Invoke();
         }
 
         private void OnUpdateSocketCoin(string coin)
@@ -95,6 +121,11 @@ namespace Game
 
             // Debug.Log("callDataString: " + callDataString);
             JSInteropManager.SendTransaction(contractAddress, "rewardPoint", callDataString, gameObject.name, nameof(ClaimCallback));
+        }
+
+        private void OnUpdateAnonymous(string data)
+        {
+            Debug.Log("data: " + data);
         }
 
         private IEnumerator WalletConnectAsync(Action walletAction)

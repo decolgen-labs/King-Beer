@@ -25,14 +25,20 @@ namespace Game
         }
         void Start()
         {
-            UpdatePlayerAddress();
-            UpdatePoint();
+            UpdateUI();
         }
 
         public void UpdateUI()
         {
             UpdatePlayerAddress();
             UpdatePoint();
+            UpdateClaimBtn();
+        }
+
+        private void UpdateClaimBtn()
+        {
+            _claimBtn.interactable = !ConnectWalletManager.Instance.isAnonymous;
+            _logOutBtn.interactable = !ConnectWalletManager.Instance.isAnonymous;
         }
         private void UpdatePoint()
         {
